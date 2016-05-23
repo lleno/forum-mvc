@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNet.Identity;
+
+@model IEnumerable<Forum.Models.TematModel>
+
+@{
+    ViewBag.Title = ViewBag.ForumNazwa;
+}
+
+<h2>@ViewBag.ForumNazwa</h2>
+<h3>@ViewBag.ForumOpis</h3>
+
+@if (User.Identity.GetUserName() == "Admin")
+{
+    <p>
+        @Html.ActionLink("Edytuj Forum", "Edytuj", new { id = ViewBag.ForumID }) | 
+        @Html.ActionLink("Usuń Forum", "Usun", new { id = ViewBag.ForumID })
+    </p>
+}
+
+<p>
+    @Html.ActionLink("Dodaj Temat", "../Temat/Utworz", new { id = ViewBag.ForumId })
+</p>
+
+@foreach (var item in Model)
+{
+    <div class="row" style="background: #e0e0d1; padding: 10px; border-radius: 10px; margin-top: 10px;">
+        <div class="col-md-9" style="padding: 5px;">
+            @Html.ActionLink(item.Tytul, "../Temat/Wyswietl", new { id = item.ID })
+        </div>
+        <div class="col-md-3" style="padding: 5px;">
+            Utworzone: @Html.DisplayFor(modelItem => item.DataUtworzenia)
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Powrót", "Lista")
+</div>

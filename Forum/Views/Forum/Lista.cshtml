@@ -1,0 +1,28 @@
+﻿@using Microsoft.AspNet.Identity;
+
+@model IEnumerable<Forum.Models.ForumModel>
+
+@{
+    ViewBag.Title = "Strona glowna";
+}
+
+<h2>Lista</h2>
+
+@if (@User.Identity.GetUserName() == "Admin")
+{
+<p>
+    @Html.ActionLink("Utwórz nowe forum", "Utworz")
+</p>
+}
+
+@foreach (var item in Model) {
+    <div class="row" style="background: #e0e0d1; padding: 10px; border-radius: 10px; margin-top: 10px;">
+        <div class="col-md-5" style="padding: 5px;">
+            @Html.ActionLink(item.Nazwa, "Wyswietl", new { id = item.ID })
+        </div>
+        <div class="col-md-7" style="padding: 5px;">
+            @Html.DisplayFor(modelItem => item.Opis)
+        </div>
+    </div>
+}
+

@@ -1,0 +1,49 @@
+﻿@using Microsoft.AspNet.Identity;
+
+@model IEnumerable<Forum.Models.PostModel>
+
+@{
+    ViewBag.Title = ViewBag.TematTytul;
+}
+
+<h2>@ViewBag.TematTytul</h2>
+
+<p>
+    @Html.ActionLink("Odpowiedz", "../Post/Utworz", new { id = ViewBag.TematId })
+</p>
+
+@if (User.Identity.GetUserName() == "Admin")
+{
+    <p>
+        @Html.ActionLink("Edytuj Temat", "Edytuj", new { id = ViewBag.TematID }) |
+        @Html.ActionLink("Usuń Temat", "Usun", new { id = ViewBag.TematID })
+    </p>
+}
+
+@foreach (var item in Model) {
+    <div class="row" style="background: #e0e0d1; padding: 10px; border-radius: 10px; margin-top: 10px;">
+        <div class="col-md-12" style="padding: 5px;">
+            Data Utworzenia: @Html.DisplayFor(modelItem => item.DataUtworzenia) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Data Modyfikacji: @Html.DisplayFor(modelItem => item.DataModyfikacji)
+        </div>
+        <div class="col-md-2" style="padding: 5px;">
+            Uzytkownik: @Html.DisplayFor(modelItem => item.Autor.UserName) <br /><br />
+
+
+            @if (User.Identity.GetUserName() == "Admin" || User.Identity.GetUserId() == item.Autor.Id)
+            {
+                @Html.ActionLink("Edytuj", "../Post/Edytuj", new { id = item.ID });
+                @: |
+                @Html.ActionLink("Usuń", "../Post/Usun", new { id = item.ID });
+            }
+        </div>
+        <div class="col-md-10" style="padding: 5px;">
+            @Html.DisplayFor(modelItem => item.Tekst)
+        </div>
+    </div>
+   
+}
+
+<div>
+    @Html.ActionLink("Powrót", "../Forum/Wyswietl", new { id = ViewBag.ForumID })
+</div>
